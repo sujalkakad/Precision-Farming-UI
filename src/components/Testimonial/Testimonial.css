@@ -1,0 +1,72 @@
+/* ------------- Testimonials ------------- */
+
+.testimonial {
+    width: 100%;
+    text-align: center;
+    background-image: url(https://png.pngtree.com/thumb_back/fh260/background/20220707/pngtree-decent-yellow-color-background-image_1416424.jpg);
+    padding: 20px 0;
+}
+
+.people {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+}
+
+.person {
+    border: 2px solid black;
+    padding: 10px;
+    width: 23%; /* Four testimonials per row (default) */
+    min-width: 250px;
+    height: auto;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.person img {
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.person h5 {
+    font-size: 1.1rem;
+    margin: 5px 0;
+}
+
+.person p {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* Hover Effect */
+.person:hover {
+    transform: scale(1.05);
+}
+
+/* 🔹 Tablets & Mobiles (400px - 1024px): 2 testimonials per row */
+@media (max-width: 1024px) and (min-width: 400px) {
+    .person {
+        width: 48%; /* Two per row */
+    }
+}
+
+/* 🔹 Ensure Two Testimonials Per Row Down to 400px */
+@media (max-width: 539px) and (min-width: 400px) {
+    .person {
+        width: 48%; /* Force two per row */
+    }
+}
+
+/* 🔹 Small Mobile Screens (Below 400px): 1 testimonial per row */
+@media (max-width: 399px) {
+    .person {
+        width: 90%; /* One per row */
+    }
+}

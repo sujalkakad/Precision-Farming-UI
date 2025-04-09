@@ -1,0 +1,175 @@
+/* --------- Precision Farming Footer --------- */
+
+.wholeFooter {
+    font-family: "Open Sans", sans-serif;
+    width: 100%;
+    background-color: #1b3b1a;  /* Deep earthy green */
+    padding: 40px 0;
+    color: white;
+    /* position: relative; */
+}
+
+/* Footer Container */
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+}
+
+/* ---- Left Section (Brand & Social Media) ---- */
+.footerleft {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 250px;
+    text-align: center; /* Center content */
+}
+
+.footerleft h1 {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #6bdb50; /* Fresh green */
+}
+
+/* Social Media Icons */
+.socialmedia {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.socialmedia a {
+    text-decoration: none;
+    color: white;
+    font-size: 24px;
+    transition: color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+.socialmedia a:hover {
+    color: #6bdb50; /* Light green hover */
+    transform: scale(1.1);
+}
+
+/* ---- Middle Section (Quick Links) ---- */
+.footermiddle {
+    flex: 2;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    min-width: 250px;
+    padding-top: 20px;
+}
+
+/* Quick Links Styling */
+.middleleft h4, .middleright h4 {
+    font-size: 18px;
+    font-weight: bold;
+    justify-content: center;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #6bdb50;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.middleleft ul {
+    list-style: none;
+    padding: 0;
+}
+
+.middleleft ul li {
+    margin: 8px 0;
+}
+
+.middleleft ul li a {
+    text-decoration: none;
+    color: #d0f5be;  /* Soft greenish-white */
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.middleleft ul li a:hover {
+    color: #6bdb50;
+    text-decoration: underline;
+}
+
+/* ---- Right Section (Contact Info) ---- */
+.middleright {
+    margin-left: 50px;
+    flex: 1;
+    min-width: 250px;
+    text-align: left;
+}
+
+/* Fixing Contact Alignment in Mobile */
+.middleright div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+    justify-content: center;  /* Center text properly */
+    flex-wrap: wrap;
+}
+
+.middleright h6 {
+    margin: 0px;
+    font-size: 14px;
+    color: #d0f5be;
+}
+
+/* ---- Icons ---- */
+.icon {
+    font-size: 26px;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Farming Icons for Contact */
+.middleright div i {
+    color: #6bdb50;
+    font-size: 18px;
+}
+
+.icon:hover {
+    transform: scale(1.2);
+}
+
+/* ---- Background Texture (Subtle Farming Feel) ---- */
+.wholeFooter {
+    background-color: rgba(22, 94, 59, 1);
+}
+
+/* ---- Responsive Design ---- */
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+
+    .footermiddle {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .footerleft, .footermiddle, .middleright {
+        text-align: center;
+    }
+
+    /* Ensure Contact Section is Centered */
+    .middleright {
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .middleright div {
+        justify-content: center;
+        text-align: center;
+    }
+}

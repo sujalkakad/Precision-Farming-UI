@@ -1,0 +1,49 @@
+
+
+/* ---------------------Slide.js CSS ------------------*/
+
+#slideshow-container {
+    position: relative;
+    overflow: hidden; 
+
+}
+
+.slide {
+    position: relative;
+    width: 100%;
+}
+.img1{
+    
+    height:600px;
+    opacity: 1;
+}
+
+#prev, #next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); 
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    transition: 0.3s ease;
+    user-select: none; 
+    z-index: 10; 
+}
+
+#prev {
+    left: 0;
+    border-radius: 0 3px 3px 0;
+}
+
+#next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+#prev:hover, #next:hover {
+    background-color: rgba(0, 0, 0, 0.8); 
+}
+
+

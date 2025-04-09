@@ -1,0 +1,77 @@
+/* Ensure the entire page can scroll */
+/* html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    min-height: 100vh;  
+    overflow-x: hidden;  
+} */
+
+/* Ensure slideshow fits full screen but allows page scrolling */
+#slideshow-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 70px;  /* ✅ Push it down below the fixed navbar */
+}
+
+
+/* Ensure the image fully covers the slideshow */
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* .img1 {
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain; /* ✅ Show full image without cropping
+    display: block;
+
+} */
+.img1 {
+    width: 100vw;  /* Full width from left to right */
+    height: auto;   /* Maintain aspect ratio */
+    max-height: 100vh; /* Prevent overly tall images */
+    display: block;
+}
+
+
+/* Navigation Buttons */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 12px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    z-index: 10;
+}
+
+.prev:hover, .next:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.prev {
+    left: 15px;
+}
+
+.next {
+    right: 15px;
+}
+
+/* Ensure content below can scroll */
+.MainContent {
+    min-height: 100vh;
+}

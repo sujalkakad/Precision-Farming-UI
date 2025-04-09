@@ -1,0 +1,50 @@
+/* Shimmer Container */
+.shimmer-container {
+    position: fixed; /* Keeps it at the top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column; /* Aligns header + content */
+    align-items: center;
+    padding: 20px 20px;
+}
+
+/* Header Shimmer */
+.shimmer-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+/* Navigation & Auth Buttons */
+.shimmer-nav, .shimmer-auth {
+    display: flex;
+    gap: 20px;
+}
+
+/* Content Shimmer (Below Navbar) */
+.shimmer-content {
+    width: 100%;
+    margin-top: 30px; /* Adjusts position to match real content */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .shimmer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .shimmer-nav, .shimmer-auth {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .shimmer-content {
+        height: 300px; /* Smaller shimmer for smaller screens */
+    }
+}
