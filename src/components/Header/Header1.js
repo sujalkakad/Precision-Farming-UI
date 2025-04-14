@@ -37,24 +37,43 @@ function Header1() {
     return () => unsubscribe();
   }, []);
 
+
+  function storeToken(token, expiresInSeconds) {
+    debugger
+    const expiryTime = expiresInSeconds + 10;
+    localStorage.setItem("Authorization", token);
+    localStorage.setItem("TokenExpiry", expiryTime);
+  }
+
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
+      debugger
+      console.Log(" ⭐⭐⭐⭐⭐⭐⭐⭐⭐ " , result)
       const credential = GoogleAuthProvider.credentialFromResult(result);
-
+      debugger
+      console.Log(" ⭐⭐⭐⭐⭐⭐⭐⭐⭐ " , credential)
+      debugger
       if (!credential) {
         console.error("No credential returned from Google Sign-In");
         return;
       }
 
-      const token = credential?.accessToken; // Extract JWT token
-
+      const token = credential?.idToken; // Extract JWT token
+      console.log("🎧🎧🎧🎧🎧🎧🎧TOKEN 🙋‍♂️🙋‍♂️🙋‍♂️🙋‍♂️🙋‍♂️🙋‍♂️" + token)
+      debugger
+      
       if (!token) {
         console.error("No access token received.");
         return;
       }
 
-      localStorage.setItem("Authorization", token);
+      const user = result.user;
+      const idTokenResult = await user.getIdTokenResult();
+      const expiresInSeconds = (new Date(idTokenResult.expirationTime) - new Date()) / 1000;
+
+      storeToken(token, expiresInSeconds);
+
       // localStorage.setItem("Authorization", token);
 
       console.log("JWT Token Stored Successfully");
@@ -68,6 +87,7 @@ function Header1() {
     try {
       await signOut(auth);
       localStorage.removeItem("Authorization");
+      localStorage.removeItem("TokenExpiry");
       navigate("/");
     } catch (error) {
       console.error("Sign out error:", error);

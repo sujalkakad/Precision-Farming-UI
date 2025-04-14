@@ -15,8 +15,23 @@ function Signup() {
     setError(null); // Clear previous errors
   
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/"); // ✅ Redirect to home on success
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      const idTokenResult = await user.getIdTokenResult();
+      const token = idTokenResult.token;
+      const expiresInSeconds = (new Date(idTokenResult.expirationTime) - new Date()) / 1000;
+
+      // Store token & expiry
+      storeToken(token, expiresInSeconds);
+
+      function storeToken(token, expiresInSeconds) {
+        const expiryTime = expiresInSeconds + 10;
+        localStorage.setItem("Authorization", token);
+        localStorage.setItem("TokenExpiry", expiryTime);
+      }
+      
+      navigate("/");
+
     } catch (error) {
       let errorMessage = "Failed to create an account. Please try again.";
   

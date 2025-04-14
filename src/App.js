@@ -39,8 +39,48 @@ function App() {
       setLoading(false); // ✅ Set loading to false when auth state resolves
     });
 
-    return () => unsubscribe(); // ✅ Cleanup function
+
+    // Set up idle timeout event listeners
+  const removeIdleListeners = setupIdleTimeout();
+
+    function setupIdleTimeout() {
+      let timeout;
+    
+      const resetTokenExpiry = () => {
+        const token = localStorage.getItem("Authorization");
+        if (token) {
+          // Extend token expiry on activity
+          storeToken(token, 900); // Reset to 30 mins
+        }
+      };
+    
+      function storeToken(token, expiresInSeconds) {
+          const expiryTime = expiresInSeconds + 10;
+          localStorage.setItem("Authorization", token);
+          localStorage.setItem("TokenExpiry", expiryTime);
+        }
+
+      const events = ["mousemove", "keydown", "scroll", "click"];
+    
+      events.forEach((event) => {
+        window.addEventListener(event, resetTokenExpiry);
+      });
+    
+      // Optional cleanup
+      return () => {
+        events.forEach((event) => {
+          window.removeEventListener(event, resetTokenExpiry);
+        });
+      };
+    }
+
+    return () => {
+      unsubscribe();
+      removeIdleListeners();
+    }
+    
   }, []);
+
 
   const handleGoogleSignIn = async () => {
     try {

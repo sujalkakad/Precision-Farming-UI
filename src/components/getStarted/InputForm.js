@@ -292,16 +292,38 @@ class InputForm extends Component {
         console.log("Form Data:", this.state);
       
         const formData = new FormData();
+        const account = new FormData()
+
+        const currentUser = auth.currentUser;
+        if (!currentUser || !currentUser.email) {
+        Swal.fire("Error", "User not signed in. Please login again.", "error");
+        return;
+        }
+        const userEmail = currentUser.email;
+
         formData.append("username", this.state.username);
+        account.append("username", this.state.username);
+
         formData.append("area", this.state.area);
         formData.append("measureScale", this.state.measureScale);
-        // formData.append("soilType", this.state.soilType);
+
+        formData.append("email", userEmail);  // ✅ Add email field
+        account.append("email", userEmail);
+
         formData.append("previousCrops", JSON.stringify(this.state.previousCrops));
         
         formData.append("address", this.state.address);
+        account.append("address", this.state.address);
+
         formData.append("city", this.state.city);
+        account.append("city", this.state.city);
+
         formData.append("pincode", this.state.pincode);
+        account.append("pincode", this.state.pincode);
+
         formData.append("contactNum", this.state.contactNum)
+        account.append("contactNum", this.state.contactNum)
+
         let userLocation = JSON.stringify(this.state.markerPosition);
         formData.append("markerPosition", JSON.stringify(this.state.markerPosition));
       
@@ -311,11 +333,31 @@ class InputForm extends Component {
             formData.append("reports", fileInput.files[i]);
           }
         }
+
+        try {
+            const response = await axios.post("http://localhost:5000/api/account/create-account", account,{
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              }
+            });
+        
+            const result = await response.json();
+        
+            if (response.ok) {
+              console.log("✅ Account created:", result.data);
+            } else {
+              console.error("❌ Error:", result.message);
+            }
+          } catch (error) {
+            console.error("🚨 Network error:", error);
+          }
       
+
         try {
           const response = await axios.post("https://backend-dev-deployed.vercel.app/api/submit-farm-data", formData, {
             headers: {
-              "Content-Type": "multipart/form-data",
+              "Content-Type": "multipart/form-data"              
             },
           });
       
@@ -420,44 +462,44 @@ class InputForm extends Component {
           console.error("Error submitting form:", error);
           Swal.fire("Error", "Server error. Try again later.", "error");
         }
-      
 
 
         // SUJAL Soil Data API Call
         try {
-          const { lat, lng } = this.state.markerPosition;
-            
-            const currentUser = auth.currentUser;
-            if (!currentUser) {
-            console.warn("⚠️ No authenticated user found!");
-            return;
+            const { lat, lng } = this.state.markerPosition;
+              
+              const currentUser = auth.currentUser;
+              if (!currentUser) {
+              console.warn("⚠️ No authenticated user found!");
+              return;
+              }
+        
+            const requestPromise = axiosClient.post("https://final-year-precision-farming-deployed.vercel.app/api/soil/save-soil-data", {
+              userEmail: currentUser.email,
+              latitude: lat,
+              longitude: lng,
+            });
+        
+            const timeoutPromise = new Promise((_, reject) =>
+              setTimeout(() => reject(new Error("⏱ Request timed out after 20 seconds")), 20000)
+            );
+        
+            const response = await Promise.race([requestPromise, timeoutPromise]);
+        
+            const savedData = response.data.data;
+            console.log("✅ Soil data stored & returned:", savedData);
+        
+            this.setState({ soilData: savedData.soilData });
+            if (this.props.onSoilDataUpdate) {
+              this.props.onSoilDataUpdate(savedData.soilData);
             }
-      
-          const requestPromise = axiosClient.post("https://final-year-precision-farming-deployed.vercel.app/api/soil/save-soil-data", {
-            userEmail: currentUser.email,
-            latitude: lat,
-            longitude: lng,
-          });
-      
-          const timeoutPromise = new Promise((_, reject) =>
-            setTimeout(() => reject(new Error("⏱ Request timed out after 20 seconds")), 20000)
-          );
-      
-          const response = await Promise.race([requestPromise, timeoutPromise]);
-      
-          const savedData = response.data.data;
-          console.log("✅ Soil data stored & returned:", savedData);
-      
-          this.setState({ soilData: savedData.soilData });
-          if (this.props.onSoilDataUpdate) {
-            this.props.onSoilDataUpdate(savedData.soilData);
+          } catch (error) {
+            console.error("❌ Failed to fetch/store soil data:", error.message);
           }
-        } catch (error) {
-          console.error("❌ Failed to fetch/store soil data:", error.message);
-        }
 
+      
 
-      };
+     };
       
 
       

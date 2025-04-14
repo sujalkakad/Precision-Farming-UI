@@ -10,7 +10,20 @@ function AuthComponent() {
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+
+      const idTokenResult = await result.getIdTokenResult();
+      const token = idTokenResult.token;
+      const expiresInSeconds = (new Date(idTokenResult.expirationTime) - new Date()) / 1000;  
+      storeToken(token, expiresInSeconds);
+
+      function storeToken(token, expiresInSeconds) {
+        const expiryTime = expiresInSeconds + 10;
+        localStorage.setItem("Authorization", token);
+        localStorage.setItem("TokenExpiry", expiryTime);
+      }
+      
+
     } catch (error) {
       console.error("Google Sign-In Error:", error);
     }
