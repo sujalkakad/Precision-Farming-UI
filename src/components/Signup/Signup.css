@@ -1,28 +1,35 @@
-/* ------- Signup Page Styling -------- */
+/* ------- General Styling -------- */
 body {
-    background-color: #cde4b5;
+    background-color: #cde4b5; /* Light green background for the whole page */
 }
 
+/* ------- Signup Container Styling -------- */
 .signup-container {
     max-width: 400px;
     margin: auto;
     margin-top: 5%;
     padding: 20px;
-    background-color: rgba(224, 232, 229, 0.988);
-    box-shadow: 4px 8px rgba(20, 0, 0, 0.153);
+    background-color: rgba(224, 232, 229, 0.988); /* Light grayish background */
+    box-shadow: 4px 8px rgba(20, 0, 0, 0.153); /* Soft shadow effect */
     border-radius: 8px;
     text-align: center;
 }
 
+/* ------- Heading Styling -------- */
 h2 {
-    color: #333;
+    color: #333; /* Dark text color for the heading */
 }
 
+/* ------- Signup Form Styling -------- */
 .signup-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-top: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
 }
 
 .signup-form input {
@@ -34,7 +41,7 @@ h2 {
 }
 
 .signup-btn {
-    background-color: #30cd3f;
+    background-color: #30cd3f; /* Green button */
     color: white;
     border: none;
     padding: 10px;
@@ -44,26 +51,60 @@ h2 {
     transition: 0.3s;
 }
 
+/* Button Hover Effect */
 .signup-btn:hover {
-    background-color: #28b032;
+    background-color: #28b032; /* Darker green on hover */
 }
 
+/* ------- Error Message Styling -------- */
 .error-message {
     color: red;
     font-size: 14px;
     margin-bottom: 10px;
 }
 
+/* ------- Login Link Styling -------- */
 .login-link {
     margin-top: 15px;
     font-size: 14px;
 }
 
 .login-link a {
-    color: #007bff;
+    color: #007bff; /* Blue color for the login link */
     text-decoration: none;
 }
 
 .login-link a:hover {
+    text-decoration: underline;
+}
+
+/* ------- Button Styling -------- */
+button {
+    padding: 10px;
+    background-color: #4CAF50; /* Green button */
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* ------- Footer Link Styling -------- */
+.signup-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.link {
+    color: #007BFF; /* Blue color for links */
+    text-decoration: none;
+}
+
+.link:hover {
     text-decoration: underline;
 }

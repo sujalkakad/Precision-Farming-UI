@@ -10,12 +10,12 @@
 /* Ensure slideshow fits full screen but allows page scrolling */
 #slideshow-container {
     position: relative;
-    width: 100vw;
+    width: 99vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 70px;  /* ✅ Push it down below the fixed navbar */
+    margin-top: -1.2rem;   
 }
 
 

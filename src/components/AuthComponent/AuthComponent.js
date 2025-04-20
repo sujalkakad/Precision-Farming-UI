@@ -21,8 +21,25 @@ function AuthComponent() {
         const expiryTime = expiresInSeconds + 10;
         localStorage.setItem("Authorization", token);
         localStorage.setItem("TokenExpiry", expiryTime);
+
+        startTokenCountdown();
       }
       
+      function startTokenCountdown() {
+        const interval = setInterval(() => {
+          const expiryTime = parseInt(localStorage.getItem("TokenExpiry"), 10);
+          const currentTime = Date.now();
+          const timeLeft = Math.max(0, Math.floor((expiryTime - currentTime) / 1000));
+      
+          console.log(`Token expires in: ${timeLeft}s`);
+      
+          if (timeLeft <= 0) {
+            localStorage.removeItem("Authorization");
+            clearInterval(interval);
+            console.log("Token has expired.");
+          }
+        }, 1000); // update every second
+      }
 
     } catch (error) {
       console.error("Google Sign-In Error:", error);

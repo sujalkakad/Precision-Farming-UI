@@ -1,14 +1,17 @@
-import React, { Component, useEffect } from "react";
-import "./Contact.css";
-import axiosClient from "../../utils/axiosInterceptor";
-import { auth } from "../../firebase";  // Ensure correct path
-import { useState } from "react";
-import Swal from 'sweetalert2'
-import axios from "axios";
-import CryptoJS from "crypto-js"; // Import CryptoJS
-import { getAuth } from "firebase/auth";
-const secretKey = process.env.REACT_APP_SECRET_KEY || "defaultSecret";
 
+import React, { useState } from "react";
+import {
+  Box,
+  TextField,
+  Typography,
+  Button,
+  Paper,
+  Stack,
+  Fade,
+} from "@mui/material";
+import Swal from "sweetalert2";
+import { getAuth } from "firebase/auth";
+import axios from "axios";
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -18,147 +21,199 @@ function Contact() {
     message: "",
   });
 
+  const [touched, setTouched] = useState({
+    name: false,
+    email: false,
+    phone: false,
+    message: false,
+  });
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleBlur = (e) => {
+    setTouched({ ...touched, [e.target.name]: true });
+  };
+
+  const isFieldError = (field) => touched[field] && !formData[field];
+
   const sendEmail = async (e) => {
     e.preventDefault();
-  
+
     const auth = getAuth();
     const user = auth.currentUser;
-  
+
     if (!user) {
-      console.error("No user is signed in.");
-      Swal.fire({ title: "You are not signed in! Please sign in.", icon: "warning" });
+      Swal.fire({ title: "You are not signed in!", icon: "warning" });
       return;
     }
-  
+
     try {
-      const token = await user.getIdToken(true); // ✅ Force refresh for a valid token
-      console.log("Firebase Token:", token); // Debugging
-  
-      await axios.post("https://final-year-precision-farming-deployed.vercel.app/api/contact/addContact", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`, // ✅ Ensure header is correct
-          "Content-Type": "application/json",
-        },
-      });
-  
+      const token = await user.getIdToken(true);
+      await axios.post(
+        "https://final-year-precision-farming-deployed.vercel.app/api/contact/addContact",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       Swal.fire({ title: "Message Sent!", icon: "success" });
       setFormData({ name: "", email: "", phone: "", message: "" });
+      setTouched({ name: false, email: false, phone: false, message: false });
     } catch (error) {
       console.error("Error:", error);
       Swal.fire({ title: "Failed to send message.", icon: "error" });
     }
   };
-  
-  
-  
-
 
   return (
-    <div className="contactsection">
-      <div className="ContactTitle">
-        <h1>Contact Us</h1>
-      </div>
+    <Box
+      sx={{
+        minHeight: "100vh", // or "100%" if you want it to strictly fit visible space
+        backgroundImage:
+          'url("https://static.vecteezy.com/system/resources/previews/013/402/878/large_2x/beautiful-wooden-floor-and-green-rice-field-nature-background-agriculture-product-standing-showcase-background-free-photo.jpg")',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        px: 2,
+        py: 0, // reduce vertical padding
+        mt: -4,
+      }}
+    >
+      <Fade in timeout={600}>
+        <Paper
+          elevation={6}
+          sx={{
+            p: 3,
+            pb:1,
+            maxWidth: 500,
+            width: "100%",
+            borderRadius: 3,
+            backgroundColor: "rgba(255, 255, 255, 0.95)",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          <Typography
+            variant="h4"
+            textAlign="center"
+            mb={3}
+            fontWeight="bold"
+            color="primary.main"
+          >
+            Contact Us
+          </Typography>
 
-      <div className="Main">
-        {/* action='https://formspree.io/f/xkgnwekr' */}
-        <form onSubmit={sendEmail} className="ContactForm">
-          <div>
-            {/* <label>Name: </label> */}
-            <input
-              type="text"
-              name="name" // Ensure this matches state keys
-              id="Name"
-              placeholder="User Name"
-              autoComplete="off"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <form onSubmit={sendEmail} noValidate>
+            <Stack spacing={0.5}>
+              <TextField
+                error={isFieldError("name")}
+                label="Name"
+                name="name"
+                multiline
+                variant="standard"
+                fullWidth
+                required
+                value={formData.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={
+                  isFieldError("name") ? "Please enter your name." : " "
+                }
+              />
 
-          <div>
-            {/* <label>Email:</label> */}
-            <input
-              type="email"
-              name="email"
-              id="Email"
-              placeholder="Email"
-              autoComplete="off"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
+              <TextField
+                error={isFieldError("email")}
+                label="Email"
+                name="email"
+                multiline
+                variant="standard"
+                fullWidth
+                required
+                value={formData.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={
+                  isFieldError("email") ? "Please enter your email." : " "
+                }
+              />
 
-          <div>
-            {/* <label>Phone:</label> */}
-            <input
-              type="tel"
-              name="phone"
-              id="Phone"
-              placeholder="Phone No."
-              maxLength="10"
-              pattern="[0-9]{10}"
-              autoComplete="off"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
-          </div>
+              <TextField
+                error={isFieldError("phone")}
+                label="Phone"
+                name="phone"
+                multiline
+                variant="standard"
+                fullWidth
+                required
+                inputProps={{ maxLength: 10, pattern: "[0-9]{10}" }}
+                value={formData.phone}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={
+                  isFieldError("phone")
+                    ? "Please enter a valid phone number."
+                    : " "
+                }
+              />
 
-          <div>
-            {/* <label>Message:</label> */}
-            <textarea
-              name="message"
-              id="Message"
-              placeholder="Message"
-              cols="30"
-              rows="5"
-              autoComplete="off"
-              value={formData.message}
-              onChange={handleChange}
-            />
-          </div>
+              <TextField
+                error={isFieldError("message")}
+                label="Message"
+                name="message"
+                multiline
+                rows={3}
+                variant="standard"
+                fullWidth
+                required
+                value={formData.message}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={
+                  isFieldError("message")
+                    ? "Message field is mandatory."
+                    : " "
+                }
+              />
 
-          <input type="submit" value="send" className="btn btn-primary" />
-        </form>
-      </div>
-    </div>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    mt: 2,
+                  }}
+                >
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      py: 1.2,
+                      px: 3,
+                      fontWeight: "normal",
+                      fontSize: "0.1rem",
+                      borderRadius: 2,
+                      whiteSpace: "nowrap",
+                      minWidth: "40%",
+                    }}
+                  >
+                    Send Message
+                  </Button>
+                </Box>
+
+
+            </Stack>
+          </form>
+        </Paper>
+      </Fade>
+    </Box>
   );
 }
 
 export default Contact;
-
-/**
- * 
- * 
- * const sendEmail = (event) => {
-        event.preventDefault();
-        
-        // Using the globally available Email object from smtpjs
-        window.Email.send({
-            Host: "smtp.gmail.com",
-            Username: "precisionfarming909@gmail.com",
-            Password: "Precision@909",
-            To: "precisionfarming909@gmail.com",
-            From: document.getElementById('Email').value,
-            Subject: "New Contact Form Enquiry From " + document.getElementById('Name').value + ".",
-            Body: `
-                Name: ${document.getElementById('Name').value}
-                <br/> Email: ${document.getElementById('Email').value}
-                <br/> Phone No.: ${document.getElementById('Phone').value}
-                <br/> Message: ${document.getElementById('Message').value}
-            `,
-        }).then(
-            () => alert("Message Sent Successfully.")
-        ).catch(error => {
-            alert("Failure in message sending!");
-            console.error(error); // Log errors for easier debugging
-        });
-    };
-
- */

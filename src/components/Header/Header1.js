@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWheatAwn, faCaretDown  } from "@fortawesome/free-solid-svg-icons";
+import { faWheatAwn, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import "./Header1.css";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase";
@@ -11,73 +11,110 @@ import { Menu, MenuItem, Dialog, DialogTitle, DialogContent } from "@mui/materia
 import AccountInfo from "../AccountDetails/AccountInfo";
 import SignOutDialog from "../SignOutDialog";
 
-import InputForm from '../getStarted/InputForm';
-import SoilInfo from '../soilDisplay/soilInfoDisplay';
-
 function Header1() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [user, setUser] = useState(null);
   const [openAccountDialog, setOpenAccountDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); // ✅ Mobile menu state
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const [soilData, setSoilData] = useState(null);
+  const tokenIntervalRef = useRef(null);
+  const lastLogTimeRef = useRef(0);
 
-  // Callback function to receive soilData from InputForm
-  const handleSoilData = (data) => {
-    console.log("📡 Updating soilData in Header1:", data);
-    setSoilData(data);
-  };
+  const TOKEN_EXPIRY_SECONDS = 900;
+  const LOG_INTERVAL = 15000; // Log once every 15 seconds
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
+      if (currentUser && localStorage.getItem("Authorization")) {
+        startTokenCountdown();
+        setupActivityListeners();
+      } else {
+        clearTokenCountdown();
+        removeActivityListeners();
+      }
     });
-    return () => unsubscribe();
+
+    return () => {
+      unsubscribe();
+      clearTokenCountdown();
+      removeActivityListeners();
+    };
   }, []);
 
+  const setupActivityListeners = () => {
+    ["mousemove", "keydown", "scroll", "click"].forEach((event) =>
+      window.addEventListener(event, resetTokenExpiry)
+    );
+  };
 
-  function storeToken(token, expiresInSeconds) {
-    debugger
-    const expiryTime = expiresInSeconds + 10;
+  const removeActivityListeners = () => {
+    ["mousemove", "keydown", "scroll", "click"].forEach((event) =>
+      window.removeEventListener(event, resetTokenExpiry)
+    );
+  };
+
+  const resetTokenExpiry = () => {
+    const token = localStorage.getItem("Authorization");
+    if (!token) return;
+
+    const newExpiryTime = Date.now() + TOKEN_EXPIRY_SECONDS * 1000;
+    localStorage.setItem("TokenExpiry", newExpiryTime.toString());
+  };
+
+  const startTokenCountdown = () => {
+    clearTokenCountdown();
+
+    tokenIntervalRef.current = setInterval(() => {
+      const expiryTime = parseInt(localStorage.getItem("TokenExpiry"), 10);
+      const currentTime = Date.now();
+      const timeLeftSec = Math.max(0, Math.floor((expiryTime - currentTime) / 1000));
+
+      const now = Date.now();
+      if (now - lastLogTimeRef.current >= LOG_INTERVAL || timeLeftSec <= 10) {
+        lastLogTimeRef.current = now;
+        console.log(`⏳ Token expires in ${timeLeftSec}s`);
+      }
+
+      if (timeLeftSec <= 0) {
+        localStorage.removeItem("Authorization");
+        localStorage.removeItem("TokenExpiry");
+        clearTokenCountdown();
+        console.warn("🔐 Token expired. Signing out...");
+        signOut(auth).then(() => navigate("/"));
+      }
+    }, 1000);
+  };
+
+  const clearTokenCountdown = () => {
+    if (tokenIntervalRef.current) {
+      clearInterval(tokenIntervalRef.current);
+      tokenIntervalRef.current = null;
+    }
+  };
+
+  const storeToken = (token) => {
+    const expiryTime = Date.now() + TOKEN_EXPIRY_SECONDS * 1000;
     localStorage.setItem("Authorization", token);
-    localStorage.setItem("TokenExpiry", expiryTime);
-  }
+    localStorage.setItem("TokenExpiry", expiryTime.toString());
+  };
 
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
-      debugger
-      console.Log(" ⭐⭐⭐⭐⭐⭐⭐⭐⭐ " , result)
       const credential = GoogleAuthProvider.credentialFromResult(result);
-      debugger
-      console.Log(" ⭐⭐⭐⭐⭐⭐⭐⭐⭐ " , credential)
-      debugger
-      if (!credential) {
-        console.error("No credential returned from Google Sign-In");
-        return;
+      const token = credential?.idToken;
+
+      if (token) {
+        storeToken(token);
+        startTokenCountdown();
+        setupActivityListeners();
+      } else {
+        console.error("No token received.");
       }
-
-      const token = credential?.idToken; // Extract JWT token
-      console.log("🎧🎧🎧🎧🎧🎧🎧TOKEN 🙋‍♂️🙋‍♂️🙋‍♂️🙋‍♂️🙋‍♂️🙋‍♂️" + token)
-      debugger
-      
-      if (!token) {
-        console.error("No access token received.");
-        return;
-      }
-
-      const user = result.user;
-      const idTokenResult = await user.getIdTokenResult();
-      const expiresInSeconds = (new Date(idTokenResult.expirationTime) - new Date()) / 1000;
-
-      storeToken(token, expiresInSeconds);
-
-      // localStorage.setItem("Authorization", token);
-
-      console.log("JWT Token Stored Successfully");
-
     } catch (error) {
       console.error("Google Sign-In Error:", error);
     }
@@ -88,29 +125,20 @@ function Header1() {
       await signOut(auth);
       localStorage.removeItem("Authorization");
       localStorage.removeItem("TokenExpiry");
+      clearTokenCountdown();
+      removeActivityListeners();
       navigate("/");
     } catch (error) {
       console.error("Sign out error:", error);
     }
   };
 
-  // Open user dropdown
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  // Close user dropdown
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  // Open Account Dialog
+  const handleMenuOpen = (e) => setAnchorEl(e.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
   const handleOpenAccountDialog = () => {
     setOpenAccountDialog(true);
     handleMenuClose();
   };
-
-  // Open Logout Dialog
   const handleOpenLogoutDialog = () => {
     setOpenLogoutDialog(true);
     handleMenuClose();
@@ -126,7 +154,6 @@ function Header1() {
           <h2>Precision Farming</h2>
         </div>
 
-        {/* ✅ Navbar Links */}
         <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
           <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
           <li><Link to="/getstarted" onClick={() => setMenuOpen(false)}>Get Started</Link></li>
@@ -136,32 +163,13 @@ function Header1() {
           <li><Link to="/contact" onClick={() => setMenuOpen(false)}>Contact Us</Link></li>
         </ul>
 
-        {/* ✅ Authentication Section */}
         {user ? (
           <div className="user-info" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            {/* ✅ Avatar + Username */}
-            <div 
-              className="user-avatar" 
-              onClick={handleMenuOpen} 
-              style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
-            >
-              <Avatar 
-                alt="User" 
-                src={user?.photoURL || "https://via.placeholder.com/30"} 
-                sx={{ width: 30, height: 30 }} 
-              />
+            <div onClick={handleMenuOpen} style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
+              <Avatar alt="User" src={user?.photoURL || "https://via.placeholder.com/30"} sx={{ width: 30, height: 30 }} />
               <span>{user.displayName}</span>
             </div>
-
-            {/* ✅ Menu Icon for Dropdown */}
-            <FontAwesomeIcon 
-              icon={faCaretDown}
-              className="menu-icon" 
-              onClick={handleMenuOpen} 
-              style={{ cursor: "pointer" }} 
-            />
-
-            {/* ✅ User Dropdown Menu */}
+            <FontAwesomeIcon icon={faCaretDown} className="menu-icon" onClick={handleMenuOpen} style={{ cursor: "pointer" }} />
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
               <MenuItem onClick={handleOpenAccountDialog}>Account</MenuItem>
               <MenuItem onClick={handleOpenLogoutDialog}>Logout</MenuItem>
@@ -175,7 +183,6 @@ function Header1() {
         )}
       </nav>
 
-      {/* ✅ Account Info Dialog */}
       <Dialog open={openAccountDialog} onClose={() => setOpenAccountDialog(false)} fullWidth maxWidth="sm">
         <DialogTitle>Account Information</DialogTitle>
         <DialogContent>
@@ -183,7 +190,6 @@ function Header1() {
         </DialogContent>
       </Dialog>
 
-      {/* ✅ Logout Confirmation Dialog */}
       <SignOutDialog open={openLogoutDialog} onClose={() => setOpenLogoutDialog(false)} onConfirm={handleSignOut} />
     </div>
   );

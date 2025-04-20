@@ -335,7 +335,7 @@ class InputForm extends Component {
         }
 
         try {
-            const response = await axios.post("http://localhost:5000/api/account/create-account", account,{
+            const response = await axios.post("https://final-year-precision-farming-deployed.vercel.app/api/account/create-account", account,{
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -557,7 +557,7 @@ class InputForm extends Component {
                     <h1>Farm Details</h1>
 
                     <label>Name<span className="required-fields">*</span>:</label>
-                    <input type="text" name="username" value={this.state.username} onChange={this.handleInputChange} placeholder="Name..." />
+                    <input type="text" style={{width : "41rem"}} name="username" value={this.state.username} onChange={this.handleInputChange} placeholder="Name..." />
                     {this.state.errors.username && <small className="error">{this.state.errors.username}</small>}
 
                     <label>Farm Area<span className="required-fields">*</span>:</label>
@@ -573,7 +573,7 @@ class InputForm extends Component {
                     {this.state.errors.area && <small className="error">{this.state.errors.area}</small>}
 
                     <label>Previous Crops<span className="required-fields">*</span> :</label>
-                    <div id="previous-crops-input" style={{ display: "flex", gap: "10px", width: "100%" }}>
+                    <div id="previous-crops-input" style={{ display: "flex", gap: "5px", width: "100%" }}>
                         {this.state.previousCrops.map((crop, index) => (
                             <div key={index}>
                                 <select
@@ -584,7 +584,7 @@ class InputForm extends Component {
                                         this.setState({ previousCrops: updatedCrops });
                                     }}
                                     style={{
-                                        width: "14.2rem",
+                                        width: "13.5rem",
                                         maxHeight: "150px",         // height for 5 items approx.
                                         overflowY: "auto",          // add vertical scroll
                                         position: "relative",       // allow positioning
@@ -604,11 +604,11 @@ class InputForm extends Component {
 
                
                     <label>Contact Number<span className="required-fields">*</span>:</label>
-                    <input type="text" name="contactNum" value={this.state.contactNum} onChange={this.handleInputChange} placeholder="Enter contact number" />
+                    <input type="text" name="contactNum"  style={{width : "41rem"}} value={this.state.contactNum} onChange={this.handleInputChange} placeholder="Enter contact number" />
                     {this.state.errors.contactNum && <small className="error">{this.state.errors.contactNum}</small>}
 
                     <label>Select Farm Location<span className="required-fields">*</span>:</label>
-                    <input type="text" name="address" value={this.state.address} onChange={this.handleInputChange} placeholder="Enter address" />
+                    <input type="text" name="address"  style={{width : "41rem"}} value={this.state.address} onChange={this.handleInputChange} placeholder="Enter address" />
                     {this.state.errors.address && <small className="error">{this.state.errors.address}</small>}
 
                     <div id="area-input">

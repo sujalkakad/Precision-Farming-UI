@@ -1,0 +1,60 @@
+/* SoilInfo.css */
+
+/* Loading animation */
+.loading-animation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .loading-circle {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e5e7eb;
+    border-top: 4px solid #166534;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 12px;
+  }
+  
+  .loading-text {
+    color: #6b7280;
+    font-size: 14px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Responsive grid for soil parameters */
+  .soil-parameters-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  /* Hover effect for parameter cards */
+  .soil-parameter-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+  }
+  
+  /* Media queries for responsive layout */
+  @media (min-width: 576px) {
+    .soil-parameters-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .soil-parameters-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .soil-parameters-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
