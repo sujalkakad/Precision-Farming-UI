@@ -57,7 +57,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000", // ✅ Must match backend
+  baseURL: "http://localhost:5000" || "https://final-year-precision-farming-deployed.vercel.app", // ✅ Must match backend
   withCredentials: true,
 });
 
