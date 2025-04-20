@@ -271,8 +271,8 @@ select {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     background-color: #3fa844;
     color: white;
     font-weight: 600;
@@ -349,9 +349,143 @@ small.error::before {
     color: #d9534f;
 }
 
+
+
+
+
+
+/* --- In your InputForm.css file --- */
+
+/* Common Styles for Form Labels */
+.input-form-container form label {
+    display: block; /* Makes the label take its own line */
+    margin-bottom: 5px; /* Space below the label */
+    font-weight: bold;
+    font-size: 0.95rem; /* Or your form's standard label size */
+    color: #333; /* Or your standard label color */
+  }
+  
+  /* Styles for required field indicator */
+  .required-fields {
+    color: red;
+    margin-left: 4px;
+  }
+  
+  /* --- CORE STYLES FOR INPUTS --- */
+  /* Apply these styles to text, tel, number, email, etc. */
+  .input-form-container form input[type="text"],
+  .input-form-container form input[type="tel"], /* <-- Added type="tel" */
+  .input-form-container form input[type="number"],
+  .input-form-container form input[type="email"] /* Add other types as needed */
+   {
+    /* --- Visual Appearance (MATCH THESE TO YOUR OTHER INPUTS) --- */
+    width: 100%; /* Makes input take full container width */
+    padding: 10px 12px; /* Example padding inside the input */
+    border: 1px solid #ccc; /* Example border */
+    border-radius: 10px; /* Example rounded corners */
+    font-size: 1rem; /* Example font size */
+    background-color: #fff; /* Example background */
+    color: #333; /* Example text color */
+  
+    /* --- Spacing --- */
+    margin-bottom: 15px; /* Example space below the input before the next element */
+  
+    /* --- Box Model (Important!) --- */
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+  
+    /* --- Optional --- */
+    /* transition: border-color 0.2s ease-in-out; */ /* Smooth transition on focus */
+  }
+  
+  /* Optional: Style on focus (consistent hover/focus effect) */
+  .input-form-container form input[type="text"]:focus,
+  .input-form-container form input[type="tel"]:focus,
+  .input-form-container form input[type="number"]:focus,
+  .input-form-container form input[type="email"]:focus {
+    border-color: #007bff; /* Example focus border color */
+    outline: none; /* Remove default browser outline */
+    /* box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); */ /* Example focus shadow */
+  }
+  
+  
+  /* --- Style for the error message --- */
+  .input-form-container form small.error {
+    display: block; /* Make it take its own line */
+    color: red;
+    font-size: 0.85em;
+    margin-top: -10px; /* Pull it slightly closer to the input above */
+    margin-bottom: 10px; /* Space below the error message */
+  }
+  
+  /* --- Specific styles for elements within a row (like area or city/pincode) --- */
+  .form-row {
+    display: flex;
+    gap: 10px; /* Adjust spacing between items in a row */
+    align-items: center; /* Vertically align items in the row */
+    margin-bottom: 15px; /* Space below the row */
+  }
+  
+  .form-row .form-group {
+    flex: 1; /* Allow input/select elements to grow and fill space */
+    min-width: 0; /* Important for flex items to shrink correctly */
+  }
+  
+  /* Ensure inputs/selects inside form-group also get base styles if needed,
+     or rely on the general input selectors above. */
+  .form-row .form-group input,
+  .form-row .form-group select {
+     width: 100%; /* Make sure they fill the form-group container */
+     /* Reset margin-bottom if the row already provides spacing */
+     /* margin-bottom: 0; */
+     /* Other styles might be inherited or explicitly set here */
+  }
+  
+  /* Style for the specific location button if needed */
+  .use-current-location-btn {
+    padding: 6px 8px; /* Adjust padding for icon button */
+    background-color: #69b45b; /* Example background */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex; /* Center icon */
+    align-items: center; /* Center icon */
+    justify-content: center; /* Center icon */
+    flex-shrink: 0; /* Prevent button from shrinking */
+  }
+  
+  .use-current-location-btn:hover {
+    background-color: #e0e0e0; /* Example hover */
+  }
+  
+  /* Style for the text+button wrapper in the location row */
+  .location-text-button-wrapper {
+      display: 'flex';
+      align-items: 'center';
+      gap: '5px';
+      flex-shrink: 0;
+  }
+  .location-text-button-wrapper span {
+       white-space: 'nowrap';
+       font-size: '0.9em'; /* Or remove if default size is okay */
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 @media (max-width: 600px) {
     .input-form-container {
         width: 100%;
         padding: 20px;
     }
 }
+
+
+

@@ -149,7 +149,7 @@ function SoilInfo() {
 
   return (
     <div style={{ padding: "16px", maxWidth: "1200px", margin: "0 auto" }}>
-      <h2 style={{ fontSize: "24px", fontWeight: "bold", color: "#166534", marginBottom: "24px" }}>Soil Analysis Results</h2>
+      <h2 style={{ fontSize: "24px", fontWeight: "bold", color: "#255F38", marginBottom: "24px" }}>Soil Analysis Results</h2>
       
       {soilData.length === 0 ? (
         <div style={{ 
@@ -166,7 +166,7 @@ function SoilInfo() {
             </svg>
             <p style={{ fontSize: "18px", color: "#4b5563" }}>No soil data found for this account.</p>
           </div>
-          <p style={{ marginTop: "16px", color: "#6b7280" }}>Click On "Get Started" And Enter Your Correct Location with Logined Email To See Your Soil Data.</p>
+          <p style={{ marginTop: "16px", color: "#6b7280" }}>Either You are Not Sign In. <br/> OR <br/>   Click On "Get Started" And Enter Your Correct Location with Logined Email To See Your Soil Data.</p>
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>

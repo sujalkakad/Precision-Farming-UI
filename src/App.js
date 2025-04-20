@@ -20,6 +20,10 @@ import { SoilProvider } from "./context/soilContext";
 import axiosClient from "./utils/axiosInterceptor"
 // import { CssBaseline } from '@mui/material';
 
+
+import ResultPage from './components/Result/ResultPage.js';
+import Weather from "./components/soilDisplay/WeatherDataCard.js";
+
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -131,6 +135,10 @@ function App() {
 
             {/* ✅ Authentication Page */}
             <Route path="/auth" element={<AuthComponent />} />
+
+            <Route path='/result' element={<ResultPage />} />
+
+            <Route path="/weather" element={<Weather />} />
 
             {/* ✅ Dashboard Route - Only for logged-in users */}
             <Route

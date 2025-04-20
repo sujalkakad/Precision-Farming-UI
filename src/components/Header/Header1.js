@@ -160,6 +160,7 @@ function Header1() {
           <li><Link to="/history" onClick={() => setMenuOpen(false)}>View History</Link></li>
           <li><Link to="/features" onClick={() => setMenuOpen(false)}>Features</Link></li>
           <li><Link to="/soil" onClick={() => setMenuOpen(false)}>Soil Data</Link></li>
+          <li><Link to="/weather" onClick={() => setMenuOpen(false)}>Weather Data</Link></li>
           <li><Link to="/contact" onClick={() => setMenuOpen(false)}>Contact Us</Link></li>
         </ul>
 

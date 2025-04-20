@@ -1,0 +1,141 @@
+.result-container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #2d6a4f;
+}
+
+.crop-card {
+  background-color: #f1fdf6;
+  border-left: 5px solid #40916c;
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.crop-name {
+  color: #1b4332;
+  margin-bottom: 10px;
+}
+
+.crop-info {
+  font-style: italic;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.crop-details p {
+  margin: 4px 0;
+  color: #333;
+}
+
+.processing-time {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 30px;
+  color: #007f5f;
+}
+
+.no-data {
+  text-align: center;
+  font-size: 18px;
+  color: #ff4d4d;
+  margin-top: 50px;
+}
+
+
+.result-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.title {
+  text-align: center;
+  font-size: 28px;
+  color: #1b4332;
+  margin-bottom: 30px;
+}
+
+.info-section {
+  margin-bottom: 40px;
+}
+
+.info-section h3 {
+  color: #2d6a4f;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #95d5b2;
+  padding-bottom: 5px;
+}
+
+.info-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.info-section li {
+  margin: 5px 0;
+  color: #333;
+}
+
+.crop-card {
+  background-color: #e9f5ef;
+  border-left: 6px solid #52b788;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.crop-card h4 {
+  color: #1b4332;
+  margin-bottom: 8px;
+}
+
+.crop-info {
+  font-style: italic;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.crop-details p {
+  margin: 4px 0;
+  color: #444;
+}
+
+.download-section {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.download-section button {
+  background-color: #2d6a4f;
+  color: white;
+  padding: 10px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.download-section button:hover {
+  background-color: #1b4332;
+}
+
+.no-data {
+  text-align: center;
+  font-size: 18px;
+  color: #ff4d4d;
+  margin-top: 50px;
+}
